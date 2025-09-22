@@ -1,0 +1,37 @@
+tracing_disabled
+False → tracing ON
+True → tracing OFF
+
+
+
+
+
+
+
+
+
+class Span:
+    def __init__(self, name, parent=None):
+        self.name = name
+        self.parent = parent
+
+    def show(self, level=0):
+        print("  " * level + f"- {self.name}")
+        
+# Default trace
+trace = Span("Agent workflow")   # root trace
+
+# Agent span
+agent = Span("agent_span", parent=trace)
+
+# Inside agent → LLM generation
+llm = Span("generation_span", parent=agent)
+
+# Inside agent → Function call
+func = Span("function_span", parent=agent)
+
+# Print tree
+trace.show()
+agent.show(1)
+llm.show(2)
+func.show(2)

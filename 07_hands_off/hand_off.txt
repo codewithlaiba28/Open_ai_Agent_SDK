@@ -1,0 +1,14 @@
+from agents import Agent
+from agents.extensions.handoff_prompt import RECOMMENDED_PROMPT_PREFIX
+
+billing_agent = Agent(
+    name="Billing agent",
+    instructions=f"""{RECOMMENDED_PROMPT_PREFIX}
+    <Fill in the rest of your prompt here>.""",
+)
+
+
+
+
+
+is mai coder ko nahi batana pare ga ke kis ko handoff kare agent khod hi Query ke mutabik us ko handoff kare ga
