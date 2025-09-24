@@ -1,0 +1,73 @@
+Samajh gayi 👍 Tum chah rahi ho ke mai **simple aur Roman Urdu mai chota sa example** dikhau. Yahaan kuch easy orchestration examples hain:
+
+---
+
+### 1. **Classifier Example**
+
+Input classify kar ke alag agent ko bhejna:
+
+```python
+from agents import Agent
+
+classifier = Agent("gpt-4o-mini", system="Classify: [math, writing]")
+math_agent = Agent("gpt-4o-mini", system="Solve math problem.")
+writing_agent = Agent("gpt-4o-mini", system="Write a paragraph.")
+
+async def orchestrator(task):
+    result = await classifier.run(task)
+    category = result.output.lower()
+
+    if category == "math":
+        return await math_agent.run(task)
+    else:
+        return await writing_agent.run(task)
+```
+
+👉 Roman Urdu:
+"Agar user ka kaam **math** hai to math\_agent ko bhejo, warna writing\_agent ko."
+
+---
+
+### 2. **Chaining Example**
+
+Step by step kaam karwana:
+
+```python
+research_agent = Agent("gpt-4o-mini", system="Do research.")
+writer_agent = Agent("gpt-4o-mini", system="Write blog from research.")
+
+async def blog(topic):
+    research = await research_agent.run(topic)
+    draft = await writer_agent.run(research.output)
+    return draft.output
+```
+
+👉 Roman Urdu:
+"Pehle research\_agent research kare ga, phir writer\_agent us research se blog likhe ga."
+
+---
+
+### 3. **Parallel Example**
+
+Ek hi waqt mai multiple agents chalana:
+
+```python
+import asyncio
+
+summary_agent = Agent("gpt-4o-mini", system="Summarize.")
+translate_agent = Agent("gpt-4o-mini", system="Translate to Urdu.")
+
+async def process(text):
+    summary, translation = await asyncio.gather(
+        summary_agent.run(text),
+        translate_agent.run(text)
+    )
+    return summary.output, translation.output
+```
+
+👉 Roman Urdu:
+"Summary aur translation ek hi waqt mai saath saath chalenge (speed tez ho jati hai)."
+
+---
+
+Kya tum chahogi mai tumhare liye **ek combined chota project** bana dun jisme ye 3 patterns (classify, chain, parallel) ek hi jagah dikhaye jayein?
